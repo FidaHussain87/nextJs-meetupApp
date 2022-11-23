@@ -21,7 +21,7 @@ export const getStaticPaths = async () => {
   const meetups = await meetupCollection.find({}, { _id: 1 }).toArray()
   client.close()
   return {
-    fallback: false,
+    fallback: 'blocking',
     paths: meetups.map((meetup: any) => ({
       params: { meetupId: meetup._id.toString() },
     })),
@@ -48,6 +48,7 @@ export const getStaticProps = async (context: any) => {
         description: selectedMeetup.description,
       },
     },
+    revalidate: 1,
   }
 }
 export default MeetupDetails
